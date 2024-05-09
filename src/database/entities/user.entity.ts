@@ -52,7 +52,6 @@ export class User {
   deletedAt: Date;
 
   @BeforeInsert()
-  @BeforeUpdate()
   async hashPassword() {
     try {
       this.password = await bcrypt.hash(this.password, 10);
