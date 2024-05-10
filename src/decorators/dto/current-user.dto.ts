@@ -1,3 +1,7 @@
+import { UserRoleEnum } from "src/enums/user-role.enum";
+
 export class CurrentUserDto {
-  //incluir os tipos de currentUserDto
+  user: number;
+  email: string;
+  role: UserRoleEnum
 }
