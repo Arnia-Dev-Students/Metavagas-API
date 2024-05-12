@@ -10,6 +10,20 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
+  async getById(id: number) {
+    try {
+      const user = await this.userRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
+
+      return user;
+    } catch (error) {
+      throw new NotFoundException(error?.message);
+    }
+  }
+
   async me(id: number) {
     try {
       const user = await this.userRepository.findOneOrFail({ where: { id } });
