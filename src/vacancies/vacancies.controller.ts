@@ -21,10 +21,10 @@ export class VacanciesController {
     return this.vacanciesService.create(createVacancyDto, user.user, companyId);
   }
 
-  @Get()
-  findAll() {
-    return this.vacanciesService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.vacanciesService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -39,5 +39,10 @@ export class VacanciesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.vacanciesService.remove(+id);
+  }
+
+  @Get()
+  getVacancies() {
+    return this.vacanciesService.getVacancies()
   }
 }

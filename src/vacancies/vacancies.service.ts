@@ -37,6 +37,16 @@ export class VacanciesService {
     }
   }
 
+  async getVacancies() {
+    try {
+      const vacancies = await this.vacanciesRepository.find({ relations: ['company', 'advertiser', 'technologies'] });
+
+      return vacancies;
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
   findAll() {
     return `This action returns all vacancies`;
   }
