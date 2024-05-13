@@ -2,12 +2,10 @@ import { BadRequestException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import {
   BeforeInsert,
-  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -38,7 +36,7 @@ export class User {
   })
   role: UserRoleEnum;
 
-  @OneToMany((nullable: false) => Vacancy, (vacancy) => vacancy.advertiserId)
+  @OneToMany((nullable: false) => Vacancy, (vacancy) => vacancy.advertiser)
   vacancies: Vacancy[];
 
   @CreateDateColumn()
