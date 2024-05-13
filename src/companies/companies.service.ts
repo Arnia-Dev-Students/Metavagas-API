@@ -3,13 +3,13 @@ import {
   HttpException,
   Injectable,
   NotFoundException,
-} from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
-import { CreateCompanyDto } from "./dto/create-company.dto";
-import { Company } from "../database/entities/company.entity";
-import { Repository } from "typeorm";
-import { UpdateCompanyDto } from "./dto/update-company.dto";
+import { CreateCompanyDto } from './dto/create-company.dto';
+import { Company } from '../database/entities/company.entity';
+import { Repository } from 'typeorm';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Injectable()
 export class CompaniesService {
@@ -60,7 +60,10 @@ export class CompaniesService {
   async getAll(name?: string) {
     try {
       const companies = name
-        ? await this.companiesRepository.find({ where: { name }, relations: ['vacancies'] })
+        ? await this.companiesRepository.find({
+            where: { name },
+            relations: ['vacancies'],
+          })
         : await this.companiesRepository.find({ relations: ['vacancies'] });
       return companies;
     } catch (error) {
@@ -81,9 +84,9 @@ export class CompaniesService {
           );
         }
       }
-  
+
       await this.companiesRepository.update(id, data);
-  
+
       await this.getById(id);
     } catch (error) {
       console.log(error);
@@ -97,7 +100,7 @@ export class CompaniesService {
 
       await this.companiesRepository.softDelete(id);
 
-      return { response: "Company deleted with success." };
+      return { response: 'Company deleted with success.' };
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
