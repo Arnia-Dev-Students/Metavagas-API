@@ -51,8 +51,8 @@ export class AuthService {
         select: {
           email: true,
           id: true,
-          password: true
-          //role: true,
+          password: true,
+          role: true,
         },
       });
     } catch (e) {
@@ -68,7 +68,7 @@ async login(loginDto: LoginDto) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-   // console.log('user', user)
+   console.log('user', user)
 
     const compare = await bcrypt.compare(loginDto.password, user.password,);
 
@@ -78,15 +78,15 @@ async login(loginDto: LoginDto) {
 
     const payload = {
       email: user.email,
-      user: user.id
-      //role: user.role,
+      user: user.id,
+      role: user.role,
     };
 
-    //console.log('payload',payload)
+    console.log('payload',payload)
 
 
     const token = await this.jwtService.signAsync(payload);
-    //console.log(token)
+    console.log(token)
 
     return {
       token,
