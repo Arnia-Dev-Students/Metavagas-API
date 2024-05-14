@@ -1,4 +1,14 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -13,5 +23,27 @@ export class TechnologiesController {
   @Post()
   create(@Body() createTechnologiesDto: CreateTechnologiesDto) {
     return this.technologiesService.create(createTechnologiesDto);
+  }
+
+  @Get()
+  getAll() {
+    return this.technologiesService.getAll();
+  }
+
+  @UseGuards(AuthGuard, RoleGuard)
+  @Roles(UserRoleEnum.ADMIN)
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateTechnologiesDto: UpdateTechnologiesDto,
+  ) {
+    return this.technologiesService.update(id, updateTechnologiesDto);
+  }
+
+  @UseGuards(AuthGuard, RoleGuard)
+  @Roles(UserRoleEnum.ADMIN)
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.technologiesService.delete(id);
   }
 }
