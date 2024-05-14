@@ -92,34 +92,5 @@ export class AuthService {
         e.status || HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-   console.log('user', user)
-
-    const compare = await bcrypt.compare(loginDto.password, user.password,);
-
-    if (!compare) {
-      throw new UnauthorizedException('Email or password wrong');
-    }
-
-    const payload = {
-      email: user.email,
-      user: user.id,
-      role: user.role,
-    };
-
-    console.log('payload',payload)
-
-
-    const token = await this.jwtService.signAsync(payload);
-    console.log(token)
-
-    return {
-      token,
-    };
-  
-  } catch (e) {
-    throw new HttpException(e.message, e.status || HttpStatus.INTERNAL_SERVER_ERROR);
-
-  }}
-
-
+  }
+}
