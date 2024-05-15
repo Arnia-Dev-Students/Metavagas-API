@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -38,10 +37,6 @@ export class Company {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @DeleteDateColumn()
-  deletedAt: Date;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @OneToMany((nullable: false) => Vacancy, (vacancy) => vacancy.company)
   vacancies: Vacancy[];
 }
