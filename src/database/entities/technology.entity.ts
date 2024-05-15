@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -11,7 +10,7 @@ import {
 import { Vacancy } from './vacancy.entity';
 
 @Entity('technology')
-export class Tecnology {
+export class Technology {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -26,9 +25,6 @@ export class Tecnology {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 
   @ManyToMany(() => Vacancy, (vacancy) => vacancy.technologies)
   @JoinTable()
