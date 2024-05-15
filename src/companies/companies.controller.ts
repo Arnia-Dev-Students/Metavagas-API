@@ -9,15 +9,15 @@ import {
   Post,
   Query,
   UseGuards,
-} from "@nestjs/common";
+} from '@nestjs/common';
 
-import { CompaniesService } from "./companies.service";
-import { AuthGuard } from "../auth/guards/auth.guard";
-import { Roles } from "../decorators/roles.decorator";
-import { UserRoleEnum } from "../enums/user-role.enum";
-import { RoleGuard } from "../auth/guards/role.guard";
-import { UpdateCompanyDto } from "./dto/update-company.dto";
-import { CreateCompanyDto } from "./dto/create-company.dto";
+import { CompaniesService } from './companies.service';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { UserRoleEnum } from '../enums/user-role.enum';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { UpdateCompanyDto } from './dto/update-company.dto';
+import { CreateCompanyDto } from './dto/create-company.dto';
 
 @Controller('companies')
 export class CompaniesController {

@@ -7,8 +7,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtOptions } from './jwt/jwt.config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]),
-  JwtModule.registerAsync({ ...jwtOptions, global: true })],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.registerAsync({ ...jwtOptions, global: true }),
+  ],
   controllers: [AuthController],
   providers: [AuthService],
 })

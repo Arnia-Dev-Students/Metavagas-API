@@ -3,13 +3,13 @@ import {
   HttpException,
   Injectable,
   NotFoundException,
-} from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
-import { CreateCompanyDto } from "./dto/create-company.dto";
-import { Company } from "../database/entities/company.entity";
-import { Repository } from "typeorm";
-import { UpdateCompanyDto } from "./dto/update-company.dto";
+import { CreateCompanyDto } from './dto/create-company.dto';
+import { Company } from '../database/entities/company.entity';
+import { Repository } from 'typeorm';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Injectable()
 export class CompaniesService {
@@ -103,7 +103,7 @@ export class CompaniesService {
 
       await this.companiesRepository.softDelete(id);
 
-      return { response: "Company deleted with success." };
+      return { response: 'Company deleted with success.' };
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
