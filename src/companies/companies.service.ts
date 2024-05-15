@@ -59,9 +59,13 @@ export class CompaniesService {
 
   async getAll(name?: string) {
     try {
-      const companies = name
-        ? await this.companiesRepository.find({ where: { name }, relations: ['vacancies'] })
-        : await this.companiesRepository.find({ relations: ['vacancies'] });
+      const query = this.companiesRepository.createQueryBuilder('company').leftJoinAndSelect('company.vacancies', 'vacancy');
+
+      if (name) {
+        query.where('company.name ILIKE :name', { name: `%${name}%` });
+      }
+  
+      const companies = await query.getMany();
       return companies;
     } catch (error) {
       console.log(error);
@@ -72,24 +76,26 @@ export class CompaniesService {
   async update(id: number, data: UpdateCompanyDto) {
     try {
       const companyToUpdate = await this.getById(id);
-
+  
       if (data.name && data.name !== companyToUpdate.name) {
         const nameAlreadyExists = await this.companyExistsBy(data.name);
         if (nameAlreadyExists) {
           throw new BadRequestException(
-            `An company with this name: ${data.name} already exists.`,
+            `A company with this name: ${data.name} already exists.`,
           );
         }
       }
   
-      await this.companiesRepository.update(id, data);
+      const updatedCompany = Object.assign(companyToUpdate, data);
+      await this.companiesRepository.save(updatedCompany);
   
-      await this.getById(id);
+      return updatedCompany;
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
     }
   }
+  
 
   async delete(id: number) {
     try {
