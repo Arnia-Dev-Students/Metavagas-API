@@ -9,10 +9,13 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { UserRoleEnum } from 'src/enums/user-role.enum';
+import { CreateTechnologiesDto } from './dto/create-technology.dto';
+import { TechnologiesService } from './technologies.service';
+import { UpdateTechnologiesDto } from './dto/update-technologies.dto';
 
 @Controller('technologies')
 export class TechnologiesController {

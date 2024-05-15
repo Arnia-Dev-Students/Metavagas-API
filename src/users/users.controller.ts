@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
@@ -8,7 +16,6 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { UserRoleEnum } from 'src/enums/user-role.enum';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { UpdateUserDto } from './dto/update.user.dto';
-
 
 @ApiTags('Users')
 @Controller('users')
@@ -30,17 +37,16 @@ export class UsersController {
 
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
-  @Get(":id")
-  async getById(@Param("id", ParseIntPipe) id: number) {
+  @Get(':id')
+  async getById(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.getById(id);
   }
 
-
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
-  @Patch(":id")
+  @Patch(':id')
   async update(
-    @Param("id", ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdateUserDto,
   ) {
     return await this.usersService.update(id, data);

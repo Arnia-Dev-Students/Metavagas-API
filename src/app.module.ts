@@ -13,7 +13,7 @@ import { VacanciesModule } from './vacancies/vacancies.module';
     AuthModule,
     UsersModule,
     CompaniesModule,
-    VacanciesModule
+    VacanciesModule,
   ],
 })
 export class AppModule {}

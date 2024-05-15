@@ -3,11 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { TechnologiesService } from './technologies.service';
 import { TechnologiesController } from './technologies.controller';
-import { Tecnology } from '../database/entities/tecnology.entity';
+import { Technology } from 'src/database/entities/technology.entity';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([Tecnology])],
+  imports: [TypeOrmModule.forFeature([Technology])],
   controllers: [TechnologiesController],
   providers: [TechnologiesService],
 })

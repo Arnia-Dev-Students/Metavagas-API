@@ -1,9 +1,5 @@
 import { Repository } from 'typeorm';
-import {
-  HttpException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../database/entities/user.entity';
 import { UpdateUserDto } from './dto/update.user.dto';
@@ -32,7 +28,6 @@ export class UsersService {
       throw new HttpException(error.message, error.status);
     }
   }
-
 
   async getById(id: number) {
     try {
