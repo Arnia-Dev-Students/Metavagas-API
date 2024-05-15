@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -37,9 +36,6 @@ export class Company {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 
   @OneToMany((nullable: false) => Vacancy, (vacancy) => vacancy.company)
   vacancies: Vacancy[];

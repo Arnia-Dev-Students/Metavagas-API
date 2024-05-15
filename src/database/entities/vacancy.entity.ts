@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
-import { Tecnology } from './tecnology.entity';
+import { Technology } from './technology.entity';
 import { Company } from './company.entity';
 
 @Entity('vacancy')
@@ -46,6 +46,6 @@ export class Vacancy {
   @ManyToOne((nullable: false) => Company, (company) => company.vacancies)
   company: Company;
 
-  @ManyToMany(() => Tecnology, (tecnology) => tecnology.vacancies)
-  technologies: Tecnology[];
+  @ManyToMany(() => Technology, (technology) => technology.vacancies)
+  technologies: Technology[];
 }

@@ -33,8 +33,11 @@ export class AuthService {
       await this.userRepository.save(createUser);
 
       return createUser;
-    } catch (e) {
-      throw new HttpException(e.message, e?.status || HttpStatus.BAD_REQUEST);
+    } catch (error) {
+      throw new HttpException(
+        error.message,
+        error?.status || HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -57,8 +60,8 @@ export class AuthService {
           role: true,
         },
       });
-    } catch (e) {
-      throw new HttpException(e.message, e.status);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
     }
   }
 
@@ -86,10 +89,10 @@ export class AuthService {
       return {
         token,
       };
-    } catch (e) {
+    } catch (error) {
       throw new HttpException(
-        e.message,
-        e.status || HttpStatus.INTERNAL_SERVER_ERROR,
+        error.message,
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
