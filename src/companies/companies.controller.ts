@@ -30,13 +30,13 @@ export class CompaniesController {
     return this.companiesService.create(createCompanyDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   getAll(@Query('name') name?: string) {
     return this.companiesService.getAll(name);
   }
 
-  @UseGuards(AuthGuard, RoleGuard)
-  @Roles(UserRoleEnum.ADMIN)
+  @UseGuards(AuthGuard)
   @Get(':id')
   getById(@Param('id', ParseIntPipe) id: number) {
     return this.companiesService.getById(id);

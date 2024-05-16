@@ -47,7 +47,7 @@ export class VacanciesService {
 
       if (userId !== vacancy.advertiser.id && userRole !== UserRoleEnum.ADMIN) {
         throw new ForbiddenException(
-          'Você não tem permissão para atualizar esta vaga.',
+          'You are not allowed to update this vacancy.',
         );
       }
 
@@ -64,7 +64,7 @@ export class VacanciesService {
 
       if (userId !== vacancy.advertiser.id && userRole !== UserRoleEnum.ADMIN) {
         throw new ForbiddenException(
-          'Você não tem permissão para excluir esta vaga.',
+          'You are not allowed to delete this vacancy.',
         );
       }
 
@@ -143,5 +143,19 @@ export class VacanciesService {
       .getManyAndCount();
 
     return { vacancies, totalCount };
+  }
+
+  async getPublicVacancies() {
+    try {
+      const vacancies = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .leftJoinAndSelect('vacancy.company', 'company')
+        .leftJoinAndSelect('vacancy.advertiser', 'advertiser')
+        .getMany();
+
+      return vacancies;
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
   }
 }

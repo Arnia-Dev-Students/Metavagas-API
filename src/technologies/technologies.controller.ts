@@ -28,9 +28,16 @@ export class TechnologiesController {
     return this.technologiesService.create(createTechnologiesDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   getAll() {
     return this.technologiesService.getAll();
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(":id")
+  getById(@Param('id', ParseIntPipe) id: number) {
+    return this.technologiesService.getById(id);
   }
 
   @UseGuards(AuthGuard, RoleGuard)

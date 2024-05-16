@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateTechnologiesDto {
   @IsString()
@@ -8,13 +8,4 @@ export class CreateTechnologiesDto {
   @IsString()
   @IsNotEmpty()
   creatorsName: string;
-
-  @IsDate()
-  createdA: Date;
-
-  @IsDate()
-  updateAt: Date;
-
-  @IsDate()
-  deleteAt: Date;
 }

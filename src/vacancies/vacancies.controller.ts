@@ -90,4 +90,9 @@ export class VacanciesController {
   ) {
     return this.vacanciesService.delete(id, user.user, user.role);
   }
+
+  @Get('public')
+  getPublicVacancies() {
+    return this.vacanciesService.getPublicVacancies();
+  }
 }
