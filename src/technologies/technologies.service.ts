@@ -7,14 +7,14 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTechnologiesDto } from './dto/create-technology.dto';
-import { Tecnology } from 'src/database/entities/tecnology.entity';
+import { Technology } from '../database/entities/technology.entity';
 import { UpdateTechnologiesDto } from './dto/update-technologies.dto';
 
 @Injectable()
 export class TechnologiesService {
   constructor(
-    @InjectRepository(Tecnology)
-    private technologiesRepository: Repository<Tecnology>,
+    @InjectRepository(Technology)
+    private technologiesRepository: Repository<Technology>,
   ) {}
 
   async create(data: CreateTechnologiesDto) {
@@ -45,11 +45,9 @@ export class TechnologiesService {
     }
   }
 
-  async getAll(): Promise<Tecnology[]> {
+  async getAll(): Promise<Technology[]> {
     try {
-      const technologies = await this.technologiesRepository.find({
-        relations: ['vacancies'],
-      });
+      const technologies = await this.technologiesRepository.find();
       return technologies;
     } catch (error) {
       console.log(error);
@@ -61,7 +59,6 @@ export class TechnologiesService {
     try {
       return await this.technologiesRepository.findOneOrFail({
         where: { id },
-        relations: { vacancies: true },
       });
     } catch (error) {
       console.log(error);
@@ -84,7 +81,7 @@ export class TechnologiesService {
 
       await this.technologiesRepository.update(id, data);
 
-      await this.getById(id);
+      return await this.getById(id);
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
@@ -95,7 +92,7 @@ export class TechnologiesService {
     try {
       await this.getById(id);
 
-      await this.technologiesRepository.softDelete(id);
+      await this.technologiesRepository.delete(id);
 
       return { response: 'Technologies deleted with success.' };
     } catch (error) {

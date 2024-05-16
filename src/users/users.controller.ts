@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
@@ -9,17 +17,10 @@ import { UserRoleEnum } from 'src/enums/user-role.enum';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { UpdateUserDto } from './dto/update.user.dto';
 
-
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @UseGuards(AuthGuard)
-  @Get('me')
-  me(@CurrentUser() user: CurrentUserDto) {
-    return this.usersService.me(user.user);
-  }
 
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
@@ -30,19 +31,29 @@ export class UsersController {
 
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
-  @Get(":id")
-  async getById(@Param("id", ParseIntPipe) id: number) {
+  @Get(':id')
+  async getById(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.getById(id);
   }
 
+  @UseGuards(AuthGuard, RoleGuard)
+  @Roles(UserRoleEnum.ADMIN)
+  @Patch(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UpdateUserDto,
+    @CurrentUser() user: CurrentUserDto,
+  ) {
+    return await this.usersService.update(id, data, user.user, user.role);
+  }
 
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
-  @Patch(":id")
-  async update(
-    @Param("id", ParseIntPipe) id: number,
-    @Body() data: UpdateUserDto,
+  @Patch(':id')
+  async delete(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: CurrentUserDto,
   ) {
-    return await this.usersService.update(id, data);
+    return await this.usersService.delete(id, user.user, user.role);
   }
 }

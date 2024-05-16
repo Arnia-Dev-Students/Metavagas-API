@@ -101,7 +101,7 @@ export class CompaniesService {
     try {
       await this.getById(id);
 
-      await this.companiesRepository.softDelete(id);
+      await this.companiesRepository.delete(id);
 
       return { response: 'Company deleted with success.' };
     } catch (error) {
