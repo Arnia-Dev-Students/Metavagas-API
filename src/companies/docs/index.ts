@@ -1,0 +1,5 @@
+export * from './create-company.docs'
+export * from './create-company-response.docs'
+export * from './update-company.docs'
+export * from './update-company-response.docs'
+export * from './delete-company-response.docs'

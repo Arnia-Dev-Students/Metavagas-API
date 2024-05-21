@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateTechnologiesDto } from './dto/create-technology.dto';
+import { CreateTechnologyDto } from './dto/create-technology.dto';
 import { Technology } from '../database/entities/technology.entity';
-import { UpdateTechnologiesDto } from './dto/update-technologies.dto';
+import { UpdateTechnologyDto } from './dto/update-technology.dto';
 
 @Injectable()
 export class TechnologiesService {
@@ -17,7 +17,7 @@ export class TechnologiesService {
     private technologiesRepository: Repository<Technology>,
   ) {}
 
-  async create(data: CreateTechnologiesDto) {
+  async create(data: CreateTechnologyDto) {
     try {
       if (await this.technologiesExistsBy(data.tecName)) {
         throw new BadRequestException(
@@ -66,7 +66,7 @@ export class TechnologiesService {
     }
   }
 
-  async update(id: number, data: UpdateTechnologiesDto) {
+  async update(id: number, data: UpdateTechnologyDto) {
     try {
       const technologiesToUpdate = await this.getById(id);
 

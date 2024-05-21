@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateTechnologiesDto {
+export class CreateTechnologyDto {
   @IsString()
   @IsNotEmpty()
   tecName: string;
@@ -9,3 +9,4 @@ export class CreateTechnologiesDto {
   @IsNotEmpty()
   creatorsName: string;
 }
+

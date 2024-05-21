@@ -1,13 +1,9 @@
-import {
-  IsNumber,
-  IsNotEmpty,
-  IsString,
-} from "class-validator";
+import { IsNumber, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateVacancyDto {
   @IsNumber()
   @IsNotEmpty()
-  companyId: number
+  companyId: number;
 
   @IsString()
   @IsNotEmpty()
