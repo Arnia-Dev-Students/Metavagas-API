@@ -1,0 +1,7 @@
+export * from './create-vacancy.docs'
+export * from './update-vacancy.docs'
+export * from './create-vacancy-response.docs'
+export * from './update-vacancy-response.docs'
+export * from './delete-vacancy-response.docs'
+export * from './get-vacancies-response.docs'
+export * from './get-vacancy-response.docs'

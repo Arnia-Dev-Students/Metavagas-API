@@ -2,11 +2,11 @@ import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Vacancy } from 'src/database/entities/vacancy.entity';
+import { Vacancy } from '../database/entities/vacancy.entity';
 import { Repository } from 'typeorm';
-import { CompaniesService } from 'src/companies/companies.service';
-import { UsersService } from 'src/users/users.service';
-import { UserRoleEnum } from 'src/enums/user-role.enum';
+import { CompaniesService } from '../companies/companies.service';
+import { UsersService } from '../users/users.service';
+import { UserRoleEnum } from '../enums/user-role.enum';
 
 @Injectable()
 export class VacanciesService {

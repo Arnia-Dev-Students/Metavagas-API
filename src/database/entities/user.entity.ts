@@ -10,7 +10,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
 import { Vacancy } from './vacancy.entity';
 import { UserRoleEnum } from '../../enums/user-role.enum'
 
@@ -36,9 +35,6 @@ export class User {
   })
   role: UserRoleEnum;
 
-  @OneToMany((nullable: false) => Vacancy, (vacancy) => vacancy.advertiser)
-  vacancies: Vacancy[];
-
   @CreateDateColumn()
   createdAt: Date;
 
@@ -47,6 +43,9 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToMany(() => Vacancy, (vacancy) => vacancy.advertiser, { nullable: false })
+  vacancies: Vacancy[];
 
   @BeforeInsert()
   async hashPassword() {

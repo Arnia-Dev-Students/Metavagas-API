@@ -17,7 +17,7 @@ export class CreateCompanyDto {
   @IsNotEmpty()
   address: string;
 
-  @IsDateString() //Verificar a retorno do front para ver se muda para @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   foundedAt: string;
 
