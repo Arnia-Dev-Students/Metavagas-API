@@ -10,15 +10,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard';
-import { RoleGuard } from 'src/auth/guards/role.guard';
-import { Roles } from 'src/decorators/roles.decorator';
-import { UserRoleEnum } from 'src/enums/user-role.enum';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { UserRoleEnum } from '../enums/user-role.enum';
 import { CreateTechnologyDto } from './dto/create-technology.dto';
 import { TechnologiesService } from './technologies.service';
 import { UpdateTechnologyDto } from './dto/update-technology.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateTechnologyDocs, CreateTechnologyResponseDocs, DeleteTechnologyResponseDocs, UpdateTechnologyDocs } from './docs';
-import { TechnologyDocs } from 'src/database/docs/technology.docs';
+import { TechnologyDocs } from '../database/docs/technology.docs';
 
 @ApiTags('Technologies')
 @Controller('technologies')
