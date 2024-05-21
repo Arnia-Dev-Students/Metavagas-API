@@ -8,7 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../database/entities/user.entity';
 import { UpdateUserDto } from './dto/update.user.dto';
-import { UserRoleEnum } from 'src/enums/user-role.enum';
+import { UserRoleEnum } from '../enums/user-role.enum';
 
 @Injectable()
 export class UsersService {
