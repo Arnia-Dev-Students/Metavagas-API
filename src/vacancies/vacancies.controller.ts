@@ -19,7 +19,9 @@ import { UserRoleEnum } from '../enums/user-role.enum';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { CurrentUserDto } from '../decorators/dto/current-user.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
 
+@ApiTags('Vacancies')
 @Controller('vacancies')
 export class VacanciesController {
   constructor(private readonly vacanciesService: VacanciesService) {}
@@ -27,6 +29,10 @@ export class VacanciesController {
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADVERTISER)
   @Post()
+  @ApiOperation({ summary: 'Create a new vacancy' })
+  @ApiBody({ type: CreateVacancyDto })
+  @ApiResponse({ })
+  @ApiResponse({ })
   create(
     @Body() createVacancyDto: CreateVacancyDto,
     @CurrentUser() user: CurrentUserDto,
@@ -37,6 +43,17 @@ export class VacanciesController {
 
   @UseGuards(AuthGuard)
   @Get()
+  @ApiOperation({ summary: 'Get all vacancies' })
+  @ApiQuery({ name: 'technologyId', required: false, type: Number, description: 'Filter by technology ID' })
+  @ApiQuery({ name: 'vacancyRole', required: false, type: String, description: 'Filter by vacancy role' })
+  @ApiQuery({ name: 'wageMin', required: false, type: Number, description: 'Filter by minimum wage' })
+  @ApiQuery({ name: 'wageMax', required: false, type: Number, description: 'Filter by maximum wage' })
+  @ApiQuery({ name: 'vacancyType', required: false, type: String, description: 'Filter by vacancy type' })
+  @ApiQuery({ name: 'location', required: false, type: String, description: 'Filter by location' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number', example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page', example: 10 })
+  @ApiResponse({ })
+  @ApiResponse({ })
   getAll(
     @Query('technologyId') technologyId: number,
     @Query('vacancyRole') vacancyRole: string,
@@ -61,6 +78,10 @@ export class VacanciesController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiOperation({ summary: 'Get a vacancy by ID' })
+  @ApiParam({ name: 'id', type: 'integer', description: 'ID of the vacancy' })
+  @ApiResponse({ })
+  @ApiResponse({ })
   getById(@Param('id', ParseIntPipe) id: number) {
     return this.vacanciesService.getById(id);
   }
@@ -68,6 +89,11 @@ export class VacanciesController {
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.ADVERTISER)
   @Patch(':id')
+  @ApiOperation({ summary: 'Update a vacancy by ID' })
+  @ApiParam({ name: 'id', type: 'integer', description: 'ID of the vacancy' })
+  @ApiBody({ type: UpdateVacancyDto })
+  @ApiResponse({ })
+  @ApiResponse({ })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateVacancyDto: UpdateVacancyDto,
@@ -84,6 +110,10 @@ export class VacanciesController {
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN, UserRoleEnum.ADVERTISER)
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a vacancy by ID' })
+  @ApiParam({ name: 'id', type: 'integer', description: 'ID of the vacancy' })
+  @ApiResponse({ })
+  @ApiResponse({ })
   remove(
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: CurrentUserDto,
@@ -92,6 +122,8 @@ export class VacanciesController {
   }
 
   @Get('public')
+  @ApiOperation({ summary: 'Get public vacancies' })
+  @ApiResponse({ })
   getPublicVacancies() {
     return this.vacanciesService.getPublicVacancies();
   }

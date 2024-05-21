@@ -7,7 +7,7 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CurrentUser } from '../decorators/current-user.decorator';
@@ -25,6 +25,9 @@ export class UsersController {
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
   @Get()
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ })
+  @ApiResponse({ })
   async getAll() {
     return await this.usersService.getAll();
   }
@@ -32,6 +35,10 @@ export class UsersController {
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
   @Get(':id')
+  @ApiOperation({ summary: 'Get a user by ID' })
+  @ApiParam({ name: 'id', type: 'integer', description: 'ID of the user' })
+  @ApiResponse({ })
+  @ApiResponse({ })
   async getById(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.getById(id);
   }
@@ -39,6 +46,11 @@ export class UsersController {
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
   @Patch(':id')
+  @ApiOperation({ summary: 'Update a user by ID' })
+  @ApiParam({ name: 'id', type: 'integer', description: 'ID of the user' })
+  @ApiBody({ type: UpdateUserDto })
+  @ApiResponse({ })
+  @ApiResponse({ })
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdateUserDto,
@@ -49,7 +61,11 @@ export class UsersController {
 
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
-  @Patch(':id')
+  @Patch(':id/delete')
+  @ApiOperation({ summary: 'Delete a user by ID' })
+  @ApiParam({ name: 'id', type: 'integer', description: 'ID of the user' })
+  @ApiResponse({ })
+  @ApiResponse({ })
   async delete(
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: CurrentUserDto,
