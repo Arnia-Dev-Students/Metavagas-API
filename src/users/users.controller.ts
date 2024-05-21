@@ -12,11 +12,11 @@ import { UsersService } from './users.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { CurrentUserDto } from '../decorators/dto/current-user.dto';
-import { Roles } from 'src/decorators/roles.decorator';
-import { UserRoleEnum } from 'src/enums/user-role.enum';
-import { RoleGuard } from 'src/auth/guards/role.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { UserRoleEnum } from '../enums/user-role.enum';
+import { RoleGuard } from '../auth/guards/role.guard';
 import { UpdateUserDto } from './dto/update.user.dto';
-import { UserDocs } from 'src/database/docs/user.docs';
+import { UserDocs } from '../database/docs/user.docs';
 import { DeleteUserResponseDocs, UpdateUserDocs } from './docs';
 
 @ApiTags('Users')
