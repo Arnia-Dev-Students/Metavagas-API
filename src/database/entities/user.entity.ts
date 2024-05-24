@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Vacancy } from './vacancy.entity';
-import { UserRoleEnum } from '../../enums/user-role.enum'
+import { UserRoleEnum } from '../../enums/user-role.enum';
 
 @Entity('user')
 export class User {
@@ -44,7 +44,9 @@ export class User {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() => Vacancy, (vacancy) => vacancy.advertiser, { nullable: false })
+  @OneToMany(() => Vacancy, (vacancy) => vacancy.advertiser, {
+    nullable: false,
+  })
   vacancies: Vacancy[];
 
   @BeforeInsert()
