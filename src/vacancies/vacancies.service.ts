@@ -142,7 +142,9 @@ export class VacanciesService {
       .take(limit)
       .getManyAndCount();
 
-    return { vacancies, totalCount };
+    const totalPage = Math.ceil(totalCount / limit);
+
+    return { vacancies, totalCount, limit, totalPage, page };
   }
 
   async getPublicVacancies() {
