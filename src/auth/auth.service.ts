@@ -12,6 +12,7 @@ import { RegisterDto } from './dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
       const userEmail = await this.findEmail(registerPayload.email);
 
       if (userEmail) {
-        throw new BadRequestException('email already registered.');
+        throw new BadRequestException(EXCEPTION_MESSAGE.EMAIL_EXISTS);
       }
       const createUser = this.userRepository.create(registerPayload);
 
@@ -69,13 +70,13 @@ export class AuthService {
     try {
       const user = await this.getUserByEmail(loginDto.email);
       if (!user) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        throw new HttpException(EXCEPTION_MESSAGE.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
       }
 
       const compare = await bcrypt.compare(loginDto.password, user.password);
 
       if (!compare) {
-        throw new UnauthorizedException('Email or password wrong');
+        throw new UnauthorizedException(EXCEPTION_MESSAGE.WRONG_CREDENTIALS);
       }
 
       const payload = {

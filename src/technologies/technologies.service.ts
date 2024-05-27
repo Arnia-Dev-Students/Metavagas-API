@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { CreateTechnologyDto } from './dto/create-technology.dto';
 import { Technology } from '../database/entities/technology.entity';
 import { UpdateTechnologyDto } from './dto/update-technology.dto';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message';
+import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message copy';
 
 @Injectable()
 export class TechnologiesService {
@@ -21,7 +23,7 @@ export class TechnologiesService {
     try {
       if (await this.technologiesExistsBy(data.tecName)) {
         throw new BadRequestException(
-          `An technologies with this name: ${data.tecName} already exists.`,
+          EXCEPTION_MESSAGE.TECHNOLOGY_NAME_EXISTS
         );
       }
 
@@ -51,7 +53,7 @@ export class TechnologiesService {
       return technologies;
     } catch (error) {
       console.log(error);
-      throw new NotFoundException('Failed to fetch technologies');
+      throw new NotFoundException(EXCEPTION_MESSAGE.FAILED_GET_TECHNOLOGIES);
     }
   }
 
@@ -74,7 +76,7 @@ export class TechnologiesService {
         const nameAlreadyExists = await this.technologiesExistsBy(data.tecName);
         if (nameAlreadyExists) {
           throw new BadRequestException(
-            `An technologies with this name: ${data.tecName} already exists.`,
+            EXCEPTION_MESSAGE.TECHNOLOGY_NAME_EXISTS,
           );
         }
       }
@@ -94,7 +96,7 @@ export class TechnologiesService {
 
       await this.technologiesRepository.delete(id);
 
-      return { response: 'Technologies deleted with success.' };
+      return { response: SUCCESSFUL_MESSAGE.DELETE_TECHNOLOGY };
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);

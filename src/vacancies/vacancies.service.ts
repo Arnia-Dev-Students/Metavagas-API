@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
 import { UsersService } from '../users/users.service';
 import { UserRoleEnum } from '../enums/user-role.enum';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message';
+import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message copy';
 
 @Injectable()
 export class VacanciesService {
@@ -47,7 +49,7 @@ export class VacanciesService {
 
       if (userId !== vacancy.advertiser.id && userRole !== UserRoleEnum.ADMIN) {
         throw new ForbiddenException(
-          'You are not allowed to update this vacancy.',
+          EXCEPTION_MESSAGE.VACANCY_UPDATE_NOT_ALLOWED,
         );
       }
 
@@ -64,11 +66,13 @@ export class VacanciesService {
 
       if (userId !== vacancy.advertiser.id && userRole !== UserRoleEnum.ADMIN) {
         throw new ForbiddenException(
-          'You are not allowed to delete this vacancy.',
+          EXCEPTION_MESSAGE.DELETE_VACANCY_NOT_ALLOWED,
         );
       }
 
       await this.vacanciesRepository.delete(id);
+
+      return { response: SUCCESSFUL_MESSAGE.DELETE_VACANCY };
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

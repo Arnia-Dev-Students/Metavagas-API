@@ -10,6 +10,8 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { Company } from '../database/entities/company.entity';
 import { Repository } from 'typeorm';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message';
+import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message copy';
 
 @Injectable()
 export class CompaniesService {
@@ -22,7 +24,7 @@ export class CompaniesService {
     try {
       if (await this.companyExistsBy(data.name)) {
         throw new BadRequestException(
-          `An company with this name: ${data.name} already exists.`,
+          EXCEPTION_MESSAGE.COMPANY_NAME_EXISTS,
         );
       }
       const newCompany = this.companiesRepository.create(data);
@@ -69,7 +71,7 @@ export class CompaniesService {
       return companies;
     } catch (error) {
       console.log(error);
-      throw new NotFoundException('Failed to fetch companies.');
+      throw new NotFoundException(EXCEPTION_MESSAGE.FAILED_GET_COMPANIES);
     }
   }
 
@@ -81,7 +83,7 @@ export class CompaniesService {
         const nameAlreadyExists = await this.companyExistsBy(data.name);
         if (nameAlreadyExists) {
           throw new BadRequestException(
-            `A company with this name: ${data.name} already exists.`,
+            EXCEPTION_MESSAGE.COMPANY_NAME_EXISTS,
           );
         }
       }
@@ -103,7 +105,7 @@ export class CompaniesService {
 
       await this.companiesRepository.delete(id);
 
-      return { response: 'Company deleted with success.' };
+      return { response: SUCCESSFUL_MESSAGE.DELETE_COMPANY };
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
