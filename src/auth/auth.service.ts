@@ -12,7 +12,7 @@ import { RegisterDto } from './dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
 
 @Injectable()
 export class AuthService {

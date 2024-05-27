@@ -10,8 +10,8 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { Company } from '../database/entities/company.entity';
 import { Repository } from 'typeorm';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message';
-import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message copy';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
 
 @Injectable()
 export class CompaniesService {

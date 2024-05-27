@@ -9,8 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../database/entities/user.entity';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { UserRoleEnum } from '../enums/user-role.enum';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message';
-import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message copy';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
 
 @Injectable()
 export class UsersService {

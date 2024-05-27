@@ -7,8 +7,8 @@ import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
 import { UsersService } from '../users/users.service';
 import { UserRoleEnum } from '../enums/user-role.enum';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message';
-import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message copy';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
 
 @Injectable()
 export class VacanciesService {
