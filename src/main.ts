@@ -9,7 +9,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  app.setGlobalPrefix('v1');
+
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Metavagas API')
@@ -21,7 +21,7 @@ async function bootstrap() {
   SwaggerModule.setup('v1/docs', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
-
+  app.setGlobalPrefix('v1');
   app.enableCors({
     origin: '*',
   });
