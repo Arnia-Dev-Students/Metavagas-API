@@ -29,9 +29,9 @@ export class VacanciesService {
       newVacancy.advertiser = user;
       newVacancy.company = company;
 
-      const createdVacancy = await this.vacanciesRepository.save(newVacancy);
+      await this.vacanciesRepository.save(newVacancy);
 
-      return createdVacancy;
+      return newVacancy;
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
