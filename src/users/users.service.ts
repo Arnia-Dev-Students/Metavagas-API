@@ -9,6 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../database/entities/user.entity';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { UserRoleEnum } from '../enums/user-role.enum';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
 
 @Injectable()
 export class UsersService {
@@ -31,7 +33,7 @@ export class UsersService {
       const user = await this.usersRepository.findOne({ where: { id } });
 
       if (!user) {
-        throw new NotFoundException(`${id} not found.`);
+        throw new NotFoundException(EXCEPTION_MESSAGE.USER_NOT_FOUND);
       }
 
       return user;
@@ -53,7 +55,7 @@ export class UsersService {
 
       if (userId !== user.id && userRole !== UserRoleEnum.ADMIN) {
         throw new ForbiddenException(
-          'You are not allowed to update this user.',
+          EXCEPTION_MESSAGE.USER_UPDATE_NOT_ALLOWED,
         );
       }
 
@@ -73,13 +75,13 @@ export class UsersService {
 
       if (userId !== user.id && userRole !== UserRoleEnum.ADMIN) {
         throw new ForbiddenException(
-          'You are not allowed to delete this user.',
+          EXCEPTION_MESSAGE.DELETE_USER_NOT_ALLOWED,
         );
       }
 
       await this.usersRepository.softDelete(id);
 
-      return { response: 'User deleted with success.' };
+      return { response: SUCCESSFUL_MESSAGE.DELETE_USER };
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
