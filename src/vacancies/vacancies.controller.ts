@@ -29,6 +29,13 @@ import { UpdateCompanyResponseDocs } from 'src/companies/docs';
 export class VacanciesController {
   constructor(private readonly vacanciesService: VacanciesService) {}
 
+  @Get('public')
+  @ApiOperation({ summary: 'Get all public vacancies with related company, advertiser and technologies' })
+  @ApiResponse({ status: 200, description: 'Successful to get public vacancies', type: [VacancyDocs] })
+  getPublicVacancies() {
+    return this.vacanciesService.getPublicVacancies();
+  }
+
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADVERTISER)
   @Post()
@@ -122,12 +129,5 @@ export class VacanciesController {
     @CurrentUser() user: CurrentUserDto,
   ) {
     return this.vacanciesService.delete(id, user.user, user.role);
-  }
-
-  @Get('public')
-  @ApiOperation({ summary: 'Get all public vacancies with related company, advertiser and technologies' })
-  @ApiResponse({ status: 200, description: 'Successful to get public vacancies', type: [VacancyDocs] })
-  getPublicVacancies() {
-    return this.vacanciesService.getPublicVacancies();
   }
 }
