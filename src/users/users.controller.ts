@@ -7,7 +7,14 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CurrentUser } from '../decorators/current-user.decorator';
@@ -29,7 +36,11 @@ export class UsersController {
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Successful to get all users', type: [UserDocs] })
+  @ApiResponse({
+    status: 200,
+    description: 'Successful to get all users',
+    type: [UserDocs],
+  })
   async getAll() {
     return await this.usersService.getAll();
   }
@@ -40,7 +51,11 @@ export class UsersController {
   @ApiOperation({ summary: 'Get a user by ID' })
   @ApiParam({ name: 'id', type: 'integer', description: 'ID of the user' })
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Successful to get user', type: UserDocs })
+  @ApiResponse({
+    status: 200,
+    description: 'Successful to get user',
+    type: UserDocs,
+  })
   async getById(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.getById(id);
   }
@@ -52,7 +67,11 @@ export class UsersController {
   @ApiParam({ name: 'id', type: 'integer', description: 'ID of the user' })
   @ApiBody({ type: UpdateUserDocs })
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Successful to update user', type: UserDocs })
+  @ApiResponse({
+    status: 200,
+    description: 'Successful to update user',
+    type: UserDocs,
+  })
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdateUserDto,
@@ -67,7 +86,11 @@ export class UsersController {
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiParam({ name: 'id', type: 'integer', description: 'ID of the user' })
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Successful to delete user', type: DeleteUserResponseDocs })
+  @ApiResponse({
+    status: 200,
+    description: 'Successful to delete user',
+    type: DeleteUserResponseDocs,
+  })
   async delete(
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: CurrentUserDto,
