@@ -9,16 +9,18 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
+  app.setGlobalPrefix('v1');
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Metavagas API')
     .setDescription('This is an API created by students to search for jobs')
     .setVersion('1.0')
+    .addServer('/v1')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('v1/docs', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
-  app.setGlobalPrefix('v1/');
 
   app.enableCors({
     origin: '*',
@@ -26,4 +28,5 @@ async function bootstrap() {
 
   await app.listen(configService.get('PORT') || 3000);
 }
+
 bootstrap();
