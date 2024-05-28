@@ -9,9 +9,11 @@ import * as bcrypt from 'bcrypt';
 import { loginDtoMock } from '../testing/auth.test/login.mock';
 import { tokenMock } from '../testing/auth.test/token.mock';
 import { registerUserDtoMock } from '../testing/auth.test/register.mock';
+import { HttpException } from '@nestjs/common';
 
 describe('AuthService', () => {
   let authService: AuthService;
+  let userRepository: any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,6 +30,8 @@ describe('AuthService', () => {
             login: jest.fn().mockResolvedValue(userMock),
             create: jest.fn().mockResolvedValue(userMock),
             save: jest.fn().mockResolvedValue(userMock),
+            findOneOrFail: jest.fn().mockResolvedValue(userMock),
+            me: jest.fn().mockResolvedValue(userMock),
           },
         },
         jwtServiceMock,
@@ -36,6 +40,7 @@ describe('AuthService', () => {
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
+    userRepository = module.get(getRepositoryToken(User));
   });
 
   it('should be defined', () => {
@@ -67,6 +72,23 @@ describe('AuthService', () => {
       expect(authToken).toHaveProperty('token');
       expect(typeof authToken.token).toBe('string');
       expect(authToken.token).toEqual(tokenMock);
+    });
+  });
+
+  describe('me', () => {
+    it('should return a user by ID', async () => {
+      const user = userMock;
+      const result = await authService.me(1);
+      expect(result).toEqual(user);
+    });
+
+    it('should throw an exception if user is not found', async () => {
+      jest
+        .spyOn(userRepository, 'findOneOrFail')
+        .mockRejectedValue(new Error('User not found'));
+
+      await expect(authService.me(1)).rejects.toThrow(HttpException);
+      await expect(authService.me(1)).rejects.toThrow('User not found');
     });
   });
 });
