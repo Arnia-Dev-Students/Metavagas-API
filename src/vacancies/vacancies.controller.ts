@@ -21,7 +21,7 @@ import { CurrentUser } from '../decorators/current-user.decorator';
 import { CurrentUserDto } from '../decorators/dto/current-user.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { VacancyDocs } from 'src/database/docs/vacancy.docs';
-import { CreateVacancyDocs, DeleteVacancyResponseDocs, GetVacanciesResponseDocs, GetVacancyResponseDocs, UpdateVacancyDocs } from './docs';
+import { CreateVacancyDocs, CreateVacancyResponseDocs, DeleteVacancyResponseDocs, GetVacanciesResponseDocs, GetVacancyResponseDocs, UpdateVacancyDocs } from './docs';
 import { UpdateCompanyResponseDocs } from 'src/companies/docs';
 
 @ApiTags('Vacancies')
@@ -75,13 +75,13 @@ export class VacanciesController {
   @ApiOperation({ summary: 'Create a new vacancy' })
   @ApiBody({ type: CreateVacancyDocs })
   @ApiBearerAuth()
-  @ApiResponse({ status: 201, description: 'Successful to create vacancy', type: CreateVacancyDocs })
+  @ApiResponse({ status: 201, description: 'Successful to create vacancy', type: CreateVacancyResponseDocs })
   create(
     @Body() createVacancyDto: CreateVacancyDto,
     @CurrentUser() user: CurrentUserDto,
   ) {
-    const { companyId } = createVacancyDto;
-    return this.vacanciesService.create(createVacancyDto, user.user, companyId);
+    const { companyId, technologyIds } = createVacancyDto;
+    return this.vacanciesService.create(createVacancyDto, user.user, companyId, technologyIds);
   }
 
   @UseGuards(AuthGuard)

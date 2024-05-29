@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -46,6 +47,17 @@ export class Vacancy {
   @ManyToOne((nullable: false) => Company, (company) => company.vacancies)
   company: Company;
 
-  @ManyToMany(() => Technology, (technology) => technology.vacancies)
+  @ManyToMany(() => Technology)
+  @JoinTable({
+    name: 'vacancy_technology',
+    joinColumn: {
+      name: 'vacancyId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'technologyId',
+      referencedColumnName: 'id',
+    },
+  })
   technologies: Technology[];
 }

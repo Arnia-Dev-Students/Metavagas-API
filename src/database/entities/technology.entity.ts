@@ -2,8 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -25,8 +23,4 @@ export class Technology {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @ManyToMany(() => Vacancy, (vacancy) => vacancy.technologies)
-  @JoinTable()
-  vacancies: Vacancy[];
 }
