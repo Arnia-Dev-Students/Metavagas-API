@@ -36,6 +36,39 @@ export class VacanciesController {
     return this.vacanciesService.getPublicVacancies();
   }
 
+  @Get()
+  @ApiOperation({ summary: 'Get all vacancies' })
+  @ApiQuery({ name: 'technologyIds', required: false, type: [Number], description: 'Filter by technology IDs' })
+  @ApiQuery({ name: 'vacancyRole', required: false, type: String, description: 'Filter by vacancy role' })
+  @ApiQuery({ name: 'wageMin', required: false, type: Number, description: 'Filter by minimum wage' })
+  @ApiQuery({ name: 'wageMax', required: false, type: Number, description: 'Filter by maximum wage' })
+  @ApiQuery({ name: 'vacancyTypes', required: false, type: [String], description: 'Filter by vacancy types' })
+  @ApiQuery({ name: 'location', required: false, type: String, description: 'Filter by location' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number', example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page', example: 10 })
+  @ApiResponse({ status: 200, description: 'Successful to get all vacancies', type: GetVacanciesResponseDocs })
+  getAll(
+    @Query('technologyIds') technologyIds: number[],
+    @Query('vacancyRole') vacancyRole: string,
+    @Query('wageMin') wageMin: number,
+    @Query('wageMax') wageMax: number,
+    @Query('vacancyTypes') vacancyTypes: string[],
+    @Query('location') location: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.vacanciesService.getAll(
+      technologyIds,
+      vacancyRole,
+      wageMin,
+      wageMax,
+      vacancyTypes,
+      location,
+      page,
+      limit,
+    );
+  }
+
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADVERTISER)
   @Post()
@@ -49,41 +82,6 @@ export class VacanciesController {
   ) {
     const { companyId } = createVacancyDto;
     return this.vacanciesService.create(createVacancyDto, user.user, companyId);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get()
-  @ApiOperation({ summary: 'Get all vacancies' })
-  @ApiQuery({ name: 'technologyId', required: false, type: Number, description: 'Filter by technology ID' })
-  @ApiQuery({ name: 'vacancyRole', required: false, type: String, description: 'Filter by vacancy role' })
-  @ApiQuery({ name: 'wageMin', required: false, type: Number, description: 'Filter by minimum wage' })
-  @ApiQuery({ name: 'wageMax', required: false, type: Number, description: 'Filter by maximum wage' })
-  @ApiQuery({ name: 'vacancyType', required: false, type: String, description: 'Filter by vacancy type' })
-  @ApiQuery({ name: 'location', required: false, type: String, description: 'Filter by location' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number', example: 1 })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page', example: 10 })
-  @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Successful to get all vacancies', type: GetVacanciesResponseDocs })
-  getAll(
-    @Query('technologyId') technologyId: number,
-    @Query('vacancyRole') vacancyRole: string,
-    @Query('wageMin') wageMin: number,
-    @Query('wageMax') wageMax: number,
-    @Query('vacancyType') vacancyType: string,
-    @Query('location') location: string,
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-  ) {
-    return this.vacanciesService.getAll(
-      technologyId,
-      vacancyRole,
-      wageMin,
-      wageMax,
-      vacancyType,
-      location,
-      page,
-      limit,
-    );
   }
 
   @UseGuards(AuthGuard)

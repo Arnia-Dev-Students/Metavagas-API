@@ -97,57 +97,59 @@ export class VacanciesService {
   }
 
   async getAll(
-    technologyId: number,
+    technologyIds: number[],
     vacancyRole: string,
     wageMin: number,
     wageMax: number,
-    vacancyType: string,
+    vacancyTypes: string[],
     location: string,
     page: number,
     limit: number,
   ) {
     const queryBuilder = this.vacanciesRepository.createQueryBuilder('vacancy');
-
-    if (technologyId) {
+  
+    if (technologyIds && technologyIds.length > 0) {
       queryBuilder.innerJoin(
         'vacancy.technologies',
         'technology',
-        'technology.id = :technologyId',
-        { technologyId },
+        'technology.id IN (:...technologyIds)',
+        { technologyIds },
       );
     }
-
+  
     if (vacancyRole) {
-      queryBuilder.andWhere('vacancy.vacancyRole = :vacancyRole', {
-        vacancyRole,
+      queryBuilder.andWhere('vacancy.vacancyRole LIKE :vacancyRole', {
+        vacancyRole: `%${vacancyRole}%`,
       });
     }
-
+  
     if (wageMin) {
       queryBuilder.andWhere('vacancy.wage >= :wageMin', { wageMin });
     }
-
+  
     if (wageMax) {
       queryBuilder.andWhere('vacancy.wage <= :wageMax', { wageMax });
     }
-
-    if (vacancyType) {
-      queryBuilder.andWhere('vacancy.vacancyType = :vacancyType', {
-        vacancyType,
+  
+    if (vacancyTypes && vacancyTypes.length > 0) {
+      queryBuilder.andWhere('vacancy.vacancyType IN (:...vacancyTypes)', {
+        vacancyTypes,
       });
     }
-
+  
     if (location) {
-      queryBuilder.andWhere('vacancy.location = :location', { location });
+      queryBuilder.andWhere('vacancy.location LIKE :location', {
+        location: `%${location}%`,
+      });
     }
-
+  
     const [vacancies, totalCount] = await queryBuilder
       .skip((page - 1) * limit)
       .take(limit)
       .getManyAndCount();
-
+  
     const totalPage = Math.ceil(totalCount / limit);
-
+  
     return { vacancies, totalCount, limit, totalPage, page };
   }
 
