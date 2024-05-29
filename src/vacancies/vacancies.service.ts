@@ -1,4 +1,4 @@
-import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,25 +9,35 @@ import { UsersService } from '../users/users.service';
 import { UserRoleEnum } from '../enums/user-role.enum';
 import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
 import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
+import { TechnologiesService } from 'src/technologies/technologies.service';
 
 @Injectable()
 export class VacanciesService {
   constructor(
     @InjectRepository(Vacancy)
     private vacanciesRepository: Repository<Vacancy>,
+    private technologiesService: TechnologiesService,
     private companiesService: CompaniesService,
     private usersService: UsersService,
   ) {}
 
-  async create(data: CreateVacancyDto, userId: number, companyId: number) {
+  async create(data: CreateVacancyDto, userId: number, companyId: number, technologyIds?: number[]) {
     try {
       const company = await this.companiesService.getById(companyId);
       const user = await this.usersService.getById(userId);
 
-      const newVacancy = this.vacanciesRepository.create(data);
+      const technologies = await this.technologiesService.getById(technologyIds);
+      if (Array.isArray(technologies) && technologies.length !== technologyIds.length) {
+        throw new HttpException(EXCEPTION_MESSAGE.SOME_TECHNOLOGY_NOT_FOUND, HttpStatus.NOT_FOUND);
+      }
 
+      const newVacancy = this.vacanciesRepository.create(data);
       newVacancy.advertiser = user;
       newVacancy.company = company;
+      
+      if(Array.isArray(technologies)) {
+        newVacancy.technologies = technologies;
+      }
 
       await this.vacanciesRepository.save(newVacancy);
 
@@ -97,25 +107,28 @@ export class VacanciesService {
   }
 
   async getAll(
-    technologyIds: number[],
-    vacancyRole: string,
-    wageMin: number,
-    wageMax: number,
-    vacancyTypes: string[],
-    location: string,
-    page: number,
-    limit: number,
+    technologyIds?: number[],
+    vacancyRole?: string,
+    wageMin?: number,
+    wageMax?: number,
+    vacancyTypes?: string[],
+    location?: string,
+    page: number = 1,
+    limit: number = 8,
   ) {
     const queryBuilder = this.vacanciesRepository.createQueryBuilder('vacancy');
   
     if (technologyIds && technologyIds.length > 0) {
       queryBuilder.innerJoin(
-        'vacancy.technologies',
-        'technology',
+        (qb) => qb
+          .select('"vacancy_technology"."vacancyId"')
+          .from('vacancy_technology', 'vacancy_technology')
+          .where('"vacancy_technology"."technologyId" IN (:...technologyIds)', { technologyIds })
+          .groupBy('"vacancy_technology"."vacancyId"')
+          .having('COUNT(DISTINCT "vacancy_technology"."technologyId") = :technologyCount', { technologyCount: technologyIds.length }),
+        'vacancy_tech_match',
+        'vacancy.id = "vacancy_tech_match"."vacancyId"'
       );
-      technologyIds.forEach((id, index) => {
-        queryBuilder.andWhere(`technology.id = :technologyId${index}`, { [`technologyId${index}`]: id });
-      });
     }
   
     if (vacancyRole) {

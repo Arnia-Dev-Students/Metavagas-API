@@ -1,4 +1,4 @@
-import { IsNumber, IsNotEmpty, IsString } from 'class-validator';
+import { IsNumber, IsNotEmpty, IsString, IsArray, IsOptional } from 'class-validator';
 
 export class CreateVacancyDto {
   @IsNumber()
@@ -28,4 +28,8 @@ export class CreateVacancyDto {
   @IsString()
   @IsNotEmpty()
   level: string;
+
+  @IsArray()
+  @IsOptional()
+  technologyIds: number[];
 }

@@ -10,4 +10,6 @@ export enum EXCEPTION_MESSAGE {
   DELETE_USER_NOT_ALLOWED = "You are not allowed to delete this user.",
   VACANCY_UPDATE_NOT_ALLOWED = "You are not allowed to update this vacancy.",
   DELETE_VACANCY_NOT_ALLOWED = "You are not allowed to delete this vacancy.",
+  SOME_TECHNOLOGY_NOT_FOUND = "Some technologies not found.",
+  INCORRECT_ARGUMENTS = "Incorrect arguments or params."
 }
