@@ -112,9 +112,10 @@ export class VacanciesService {
       queryBuilder.innerJoin(
         'vacancy.technologies',
         'technology',
-        'technology.id IN (:...technologyIds)',
-        { technologyIds },
       );
+      technologyIds.forEach((id, index) => {
+        queryBuilder.andWhere(`technology.id = :technologyId${index}`, { [`technologyId${index}`]: id });
+      });
     }
   
     if (vacancyRole) {
@@ -151,7 +152,7 @@ export class VacanciesService {
     const totalPage = Math.ceil(totalCount / limit);
   
     return { vacancies, totalCount, limit, totalPage, page };
-  }
+  }  
 
   async getPublicVacancies() {
     try {
