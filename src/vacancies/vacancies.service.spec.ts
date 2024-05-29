@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VacanciesService } from '../vacancies/vacancies.service';
-import { vacanciesMock } from '../testing/vacanies.test/vacanciesMock';
-//import { CreateVacancyDto } from './dto/create-vacancy.dto';
+import { vacanciesMock } from '../testing/vacancies.test/vacanciesMock';
 
 describe('VacanciesService', () => {
   let service: VacanciesService;
