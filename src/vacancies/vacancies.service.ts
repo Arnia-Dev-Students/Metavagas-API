@@ -118,6 +118,9 @@ export class VacanciesService {
   ) {
     const queryBuilder = this.vacanciesRepository.createQueryBuilder('vacancy');
   
+    queryBuilder.leftJoinAndSelect('vacancy.company', 'company');
+    queryBuilder.leftJoinAndSelect('vacancy.advertiser', 'advertiser');
+  
     if (technologyIds && technologyIds.length > 0) {
       queryBuilder.innerJoin(
         (qb) => qb
@@ -165,19 +168,5 @@ export class VacanciesService {
     const totalPage = Math.ceil(totalCount / limit);
   
     return { vacancies, totalCount, limit, totalPage, page };
-  }  
-
-  async getPublicVacancies() {
-    try {
-      const vacancies = await this.vacanciesRepository
-        .createQueryBuilder('vacancy')
-        .leftJoinAndSelect('vacancy.company', 'company')
-        .leftJoinAndSelect('vacancy.advertiser', 'advertiser')
-        .getMany();
-
-      return vacancies;
-    } catch (error) {
-      throw new HttpException(error.message, error.status);
-    }
   }
 }

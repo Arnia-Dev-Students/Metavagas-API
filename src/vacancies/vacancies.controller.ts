@@ -20,7 +20,6 @@ import { RoleGuard } from '../auth/guards/role.guard';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { CurrentUserDto } from '../decorators/dto/current-user.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
-import { VacancyDocs } from 'src/database/docs/vacancy.docs';
 import { CreateVacancyDocs, CreateVacancyResponseDocs, DeleteVacancyResponseDocs, GetVacanciesResponseDocs, GetVacancyResponseDocs, UpdateVacancyDocs } from './docs';
 import { UpdateCompanyResponseDocs } from 'src/companies/docs';
 
@@ -28,13 +27,6 @@ import { UpdateCompanyResponseDocs } from 'src/companies/docs';
 @Controller('vacancies')
 export class VacanciesController {
   constructor(private readonly vacanciesService: VacanciesService) {}
-
-  @Get('public')
-  @ApiOperation({ summary: 'Get all public vacancies with related company, advertiser and technologies' })
-  @ApiResponse({ status: 200, description: 'Successful to get public vacancies', type: [VacancyDocs] })
-  getPublicVacancies() {
-    return this.vacanciesService.getPublicVacancies();
-  }
 
   @Get()
   @ApiOperation({ summary: 'Get all vacancies' })
