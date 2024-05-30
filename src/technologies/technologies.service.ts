@@ -49,7 +49,11 @@ export class TechnologiesService {
 
   async getAll(): Promise<Technology[]> {
     try {
-      const technologies = await this.technologiesRepository.find();
+      const technologies = await this.technologiesRepository.find({
+        order: {
+          createdAt: 'DESC'
+        }
+      });
       return technologies;
     } catch (error) {
       console.log(error);
