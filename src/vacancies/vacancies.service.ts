@@ -161,6 +161,8 @@ export class VacanciesService {
       });
     }
   
+    queryBuilder.orderBy('vacancy.createdAt', 'DESC');
+  
     const [vacancies, totalCount] = await queryBuilder
       .skip((page - 1) * limit)
       .take(limit)
