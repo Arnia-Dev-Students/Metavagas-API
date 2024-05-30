@@ -120,6 +120,7 @@ export class VacanciesService {
   
     queryBuilder.leftJoinAndSelect('vacancy.company', 'company');
     queryBuilder.leftJoinAndSelect('vacancy.advertiser', 'advertiser');
+    queryBuilder.leftJoinAndSelect('vacancy.technologies', 'technologies');
   
     if (technologyIds && technologyIds.length > 0) {
       queryBuilder.innerJoin(
