@@ -25,6 +25,13 @@ import { TechnologyDocs } from '../database/docs/technology.docs';
 export class TechnologiesController {
   constructor(private readonly technologiesService: TechnologiesService) {}
 
+  @Get()
+  @ApiOperation({ summary: 'Get all technologies' })
+  @ApiResponse({ status: 200, description: 'Successful to get all technologies', type: [TechnologyDocs] })
+  getAll() {
+    return this.technologiesService.getAll();
+  }
+
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(UserRoleEnum.ADMIN)
   @Post()
@@ -34,15 +41,6 @@ export class TechnologiesController {
   @ApiResponse({ status: 201, description: 'Successful to create technology', type: CreateTechnologyResponseDocs })
   create(@Body() createTechnologyDto: CreateTechnologyDto) {
     return this.technologiesService.create(createTechnologyDto);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get()
-  @ApiOperation({ summary: 'Get all technologies' })
-  @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Successful to get all technologies', type: [TechnologyDocs] })
-  getAll() {
-    return this.technologiesService.getAll();
   }
 
   @UseGuards(AuthGuard)

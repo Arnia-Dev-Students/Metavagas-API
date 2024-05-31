@@ -1,4 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { CompanyDocs } from "src/database/docs/company.docs";
+import { TechnologyDocs } from "src/database/docs/technology.docs";
+import { UserDocs } from "src/database/docs/user.docs";
 
 class VacancyDocs {
   @ApiProperty({ example: 1, description: 'Id of the vacancy.' })
@@ -42,6 +45,15 @@ class VacancyDocs {
     description: 'The date when the vacancy was updated.',
   })
   updatedAt: Date;
+
+  @ApiProperty({ description: 'Related company' })
+  company: CompanyDocs;
+
+  @ApiProperty({ description: 'Related advertiser' })
+  advertiser: UserDocs;
+
+  @ApiProperty({ description: 'Related technologies' })
+  technologies: TechnologyDocs[];
 }
 
 export class GetVacanciesResponseDocs {

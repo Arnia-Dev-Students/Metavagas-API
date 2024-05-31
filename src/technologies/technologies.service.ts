@@ -5,10 +5,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateTechnologyDto } from './dto/create-technology.dto';
 import { Technology } from '../database/entities/technology.entity';
 import { UpdateTechnologyDto } from './dto/update-technology.dto';
+import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
 
 @Injectable()
 export class TechnologiesService {
@@ -21,7 +23,7 @@ export class TechnologiesService {
     try {
       if (await this.technologiesExistsBy(data.tecName)) {
         throw new BadRequestException(
-          `An technologies with this name: ${data.tecName} already exists.`,
+          EXCEPTION_MESSAGE.TECHNOLOGY_NAME_EXISTS
         );
       }
 
@@ -47,19 +49,27 @@ export class TechnologiesService {
 
   async getAll(): Promise<Technology[]> {
     try {
-      const technologies = await this.technologiesRepository.find();
+      const technologies = await this.technologiesRepository.find({
+        order: {
+          createdAt: 'DESC'
+        }
+      });
       return technologies;
     } catch (error) {
       console.log(error);
-      throw new NotFoundException('Failed to fetch technologies');
+      throw new NotFoundException(EXCEPTION_MESSAGE.FAILED_GET_TECHNOLOGIES);
     }
   }
 
-  async getById(id: number) {
+  async getById(id: number | number[]) {
     try {
-      return await this.technologiesRepository.findOneOrFail({
-        where: { id },
-      });
+      if(Array.isArray(id)) {
+        return this.technologiesRepository.findBy({ id: In(id) })
+      } else {
+        return await this.technologiesRepository.findOneOrFail({
+          where: { id },
+        });
+      }
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
@@ -68,13 +78,17 @@ export class TechnologiesService {
 
   async update(id: number, data: UpdateTechnologyDto) {
     try {
-      const technologiesToUpdate = await this.getById(id);
+      const technologyToUpdate = await this.getById(id);
 
-      if (data.tecName && data.tecName !== technologiesToUpdate.tecName) {
+      if(Array.isArray(technologyToUpdate)) {
+        throw new BadRequestException(EXCEPTION_MESSAGE.INCORRECT_ARGUMENTS);
+      }
+
+      if (data.tecName && data.tecName !== technologyToUpdate.tecName) {
         const nameAlreadyExists = await this.technologiesExistsBy(data.tecName);
         if (nameAlreadyExists) {
           throw new BadRequestException(
-            `An technologies with this name: ${data.tecName} already exists.`,
+            EXCEPTION_MESSAGE.TECHNOLOGY_NAME_EXISTS,
           );
         }
       }
@@ -94,7 +108,7 @@ export class TechnologiesService {
 
       await this.technologiesRepository.delete(id);
 
-      return { response: 'Technologies deleted with success.' };
+      return { response: SUCCESSFUL_MESSAGE.DELETE_TECHNOLOGY };
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
