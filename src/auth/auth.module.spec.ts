@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../database/entities/user.entity'; // Verifique o caminho correto para sua entidade User
+import { User } from '../database/entities/user.entity';
 import { UsersModule } from '../users/users.module';
 import { UsersController } from '../users/users.controller';
 import { UsersService } from '../users/users.service';
 
-describe('UsersModule', () => {
+describe('AuthModule', () => {
   let module: TestingModule;
 
   beforeEach(async () => {
