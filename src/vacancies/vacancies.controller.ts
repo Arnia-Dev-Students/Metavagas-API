@@ -21,7 +21,7 @@ import { CurrentUser } from '../decorators/current-user.decorator';
 import { CurrentUserDto } from '../decorators/dto/current-user.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateVacancyDocs, CreateVacancyResponseDocs, DeleteVacancyResponseDocs, GetVacanciesResponseDocs, GetVacancyResponseDocs, UpdateVacancyDocs } from './docs';
-import { UpdateCompanyResponseDocs } from 'src/companies/docs';
+import { UpdateCompanyResponseDocs } from '../companies/docs';
 
 @ApiTags('Vacancies')
 @Controller('vacancies')

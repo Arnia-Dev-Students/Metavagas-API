@@ -34,7 +34,7 @@ import {
   DeleteCompanyResponseDocs,
   UpdateCompanyResponseDocs,
 } from './docs';
-import { CompanyDocs } from 'src/database/docs/company.docs';
+import { CompanyDocs } from '../database/docs/company.docs';
 
 @ApiTags('Companies')
 @Controller('companies')

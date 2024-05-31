@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from './guards/auth.guard';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { CurrentUserDto } from 'src/decorators/dto/current-user.dto';
+import { CurrentUserDto } from '../decorators/dto/current-user.dto';
 import { UserDocs } from '../database/docs/user.docs';
 import { LoginResponseDocs } from './docs/login-response.docs';
 import { UserRoleEnum } from '../enums/user-role.enum';
