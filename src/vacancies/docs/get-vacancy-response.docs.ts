@@ -1,5 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+export class VacancyCompanyDocs {
+  @ApiProperty({ example: 1, description: 'Id of the company.' })
+  id: number;
+
+  @ApiProperty({
+    example: 'Tech Corp',
+    description: 'Name of the company.',
+  })
+  name: string;
+}
+
+export class VacancyAdvertiserDocs {
+  @ApiProperty({ example: 1, description: 'Id of the user (advertiser).' })
+  id: number;
+
+  @ApiProperty({
+    example: 'John Doe',
+    description: 'Name of the user (advertiser).',
+  })
+  name: string;
+}
+
 export class GetVacancyResponseDocs {
   @ApiProperty({ example: 1, description: 'Id of the vacancy.' })
   id: number;
@@ -31,11 +53,11 @@ export class GetVacancyResponseDocs {
   })
   level: string;
 
-  @ApiProperty({ example: 'Mutant', description: 'Related company name' })
-  companyName: string;
+  @ApiProperty({ type: VacancyCompanyDocs })
+  company: VacancyCompanyDocs;
 
-  @ApiProperty({ example: 'Marco', description: 'Related advertiser name' })
-  advertiserName: string;
+  @ApiProperty({ type: VacancyAdvertiserDocs })
+  advertiser: VacancyAdvertiserDocs;
 
   @ApiProperty({
     example: '2024-01-01T00:00:00.000Z',
