@@ -16,4 +16,5 @@ export const vacanciesMock = {
     id: 1,
     name: 'Company',
   },
+  technologyIds: [1, 2],
 };
