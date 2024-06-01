@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { CompanyDocs } from "src/database/docs/company.docs";
-import { TechnologyDocs } from "src/database/docs/technology.docs";
-import { UserDocs } from "src/database/docs/user.docs";
+import { CompanyDocs } from "../../database/docs/company.docs";
+import { TechnologyDocs } from "../../database/docs/technology.docs";
+import { UserDocs } from "../../database/docs/user.docs";
 
 class VacancyDocs {
   @ApiProperty({ example: 1, description: 'Id of the vacancy.' })

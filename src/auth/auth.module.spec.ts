@@ -1,29 +1,28 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthService } from './auth.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../database/entities/user.entity';
-import { UsersModule } from '../users/users.module';
-import { UsersController } from '../users/users.controller';
-import { UsersService } from '../users/users.service';
+import { jwtServiceMock } from '../testing/auth.test/jwt.service.mock';
 
-describe('AuthModule', () => {
-  let module: TestingModule;
+describe('AuthService', () => {
+  let service: AuthService;
 
   beforeEach(async () => {
-    module = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({}), // manter vazio para não conectar ao banco
-        TypeOrmModule.forFeature([User]),
-        UsersModule,
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        AuthService,
+        jwtServiceMock,
+        {
+          provide: getRepositoryToken(User),
+          useValue: {},
+        },
       ],
-      controllers: [UsersController],
-      providers: [UsersService],
     }).compile();
+
+    service = module.get<AuthService>(AuthService);
   });
 
   it('should be defined', () => {
-    const controller = module.get<UsersController>(UsersController);
-    const service = module.get<UsersService>(UsersService);
-    expect(controller).toBeDefined();
     expect(service).toBeDefined();
   });
 });
