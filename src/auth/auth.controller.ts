@@ -2,8 +2,8 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { CurrentUserDto } from 'src/decorators/dto/current-user.dto';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { CurrentUserDto } from '../decorators/dto/current-user.dto';
 import { AuthGuard } from './guards/auth.guard';
 import {
   ApiTags,
@@ -12,7 +12,7 @@ import {
   ApiResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { UserDocs } from 'src/database/docs/user.docs';
+import { UserDocs } from '../database/docs/user.docs';
 import { LoginDocs, LoginResponseDocs, RegisterDocs } from './docs';
 
 @ApiTags('Auth')

@@ -10,8 +10,8 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { Company } from '../database/entities/company.entity';
 import { Repository } from 'typeorm';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
-import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
+import { EXCEPTION_MESSAGE } from '../enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from '../enums/successful-message.enum';
 
 @Injectable()
 export class CompaniesService {
@@ -61,12 +61,14 @@ export class CompaniesService {
 
   async getAll(name?: string) {
     try {
-      const query = this.companiesRepository.createQueryBuilder('company').leftJoinAndSelect('company.vacancies', 'vacancy');
+      const query = this.companiesRepository
+        .createQueryBuilder('company')
+        .leftJoinAndSelect('company.vacancies', 'vacancy');
 
       if (name) {
         query.where('company.name ILIKE :name', { name: `%${name}%` });
       }
-  
+
       const companies = await query.getMany();
       return companies;
     } catch (error) {
@@ -78,7 +80,7 @@ export class CompaniesService {
   async update(id: number, data: UpdateCompanyDto) {
     try {
       const companyToUpdate = await this.getById(id);
-  
+
       if (data.name && data.name !== companyToUpdate.name) {
         const nameAlreadyExists = await this.companyExistsBy(data.name);
         if (nameAlreadyExists) {
@@ -87,17 +89,16 @@ export class CompaniesService {
           );
         }
       }
-  
+
       const updatedCompany = Object.assign(companyToUpdate, data);
       await this.companiesRepository.save(updatedCompany);
-  
+
       return updatedCompany;
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, error.status);
     }
   }
-  
 
   async delete(id: number) {
     try {

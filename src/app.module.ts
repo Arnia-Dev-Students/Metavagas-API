@@ -15,7 +15,7 @@ import { VacanciesModule } from './vacancies/vacancies.module';
     UsersModule,
     CompaniesModule,
     TechnologiesModule,
-    VacanciesModule
+    VacanciesModule,
   ],
 })
 export class AppModule {}

@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { VacancyDocs } from './vacancy.docs';
-import { UserRoleEnum } from 'src/enums/user-role.enum';
+import { UserRoleEnum } from '../../enums/user-role.enum';
 
 export class UserDocs {
   @ApiProperty({ example: 1, description: 'The id of the user.' })

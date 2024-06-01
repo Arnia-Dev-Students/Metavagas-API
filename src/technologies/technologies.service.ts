@@ -9,8 +9,8 @@ import { In, Repository } from 'typeorm';
 import { CreateTechnologyDto } from './dto/create-technology.dto';
 import { Technology } from '../database/entities/technology.entity';
 import { UpdateTechnologyDto } from './dto/update-technology.dto';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
-import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
+import { EXCEPTION_MESSAGE } from '../enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from '../enums/successful-message.enum';
 
 @Injectable()
 export class TechnologiesService {

@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Vacancy } from '../database/entities/vacancy.entity';
 import { UsersModule } from '../users/users.module';
 import { CompaniesModule } from '../companies/companies.module';
-import { TechnologiesModule } from 'src/technologies/technologies.module';
+import { TechnologiesModule } from '../technologies/technologies.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Vacancy]), UsersModule, CompaniesModule, TechnologiesModule],
