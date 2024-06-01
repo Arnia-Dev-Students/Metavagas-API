@@ -38,7 +38,10 @@ export class VacanciesService {
       const user = await this.usersService.getById(userId);
 
       const technologies =
-        await this.technologiesService.getById(technologyIds);
+        Array.isArray(technologyIds) &&
+        technologyIds.length > 0 &&
+        (await this.technologiesService.getById(technologyIds));
+
       if (
         Array.isArray(technologies) &&
         technologies.length !== technologyIds.length
@@ -170,8 +173,7 @@ export class VacanciesService {
     page: number = 1,
     limit: number = 8,
   ) {
-    const queryBuilder =
-      await this.vacanciesRepository.createQueryBuilder('vacancy');
+    const queryBuilder = this.vacanciesRepository.createQueryBuilder('vacancy');
 
     queryBuilder.leftJoinAndSelect('vacancy.company', 'company');
     queryBuilder.leftJoinAndSelect('vacancy.advertiser', 'advertiser');
@@ -198,9 +200,12 @@ export class VacanciesService {
     }
 
     if (vacancyRole) {
-      queryBuilder.andWhere('vacancy.vacancyRole LIKE :vacancyRole', {
-        vacancyRole: `%${vacancyRole}%`,
-      });
+      queryBuilder.andWhere(
+        'LOWER(vacancy.vacancyRole) LIKE LOWER(:vacancyRole)',
+        {
+          vacancyRole: `%${vacancyRole}%`,
+        },
+      );
     }
 
     if (wageMin) {
@@ -218,7 +223,7 @@ export class VacanciesService {
     }
 
     if (location) {
-      queryBuilder.andWhere('vacancy.location LIKE :location', {
+      queryBuilder.andWhere('LOWER(vacancy.location) LIKE LOWER(:location)', {
         location: `%${location}%`,
       });
     }
@@ -229,7 +234,6 @@ export class VacanciesService {
       .skip((page - 1) * limit)
       .take(limit)
       .getManyAndCount();
-
     const totalPage = Math.ceil(totalCount / limit);
 
     return { vacancies, totalCount, limit, totalPage, page };
