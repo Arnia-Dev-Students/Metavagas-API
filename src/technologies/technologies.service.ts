@@ -9,8 +9,8 @@ import { In, Repository } from 'typeorm';
 import { CreateTechnologyDto } from './dto/create-technology.dto';
 import { Technology } from '../database/entities/technology.entity';
 import { UpdateTechnologyDto } from './dto/update-technology.dto';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
-import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
+import { EXCEPTION_MESSAGE } from '../enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from '../enums/successful-message.enum';
 
 @Injectable()
 export class TechnologiesService {
@@ -22,9 +22,7 @@ export class TechnologiesService {
   async create(data: CreateTechnologyDto) {
     try {
       if (await this.technologiesExistsBy(data.tecName)) {
-        throw new BadRequestException(
-          EXCEPTION_MESSAGE.TECHNOLOGY_NAME_EXISTS
-        );
+        throw new BadRequestException(EXCEPTION_MESSAGE.TECHNOLOGY_NAME_EXISTS);
       }
 
       const newTechnology = this.technologiesRepository.create(data);
@@ -51,8 +49,8 @@ export class TechnologiesService {
     try {
       const technologies = await this.technologiesRepository.find({
         order: {
-          createdAt: 'DESC'
-        }
+          createdAt: 'DESC',
+        },
       });
       return technologies;
     } catch (error) {
@@ -63,8 +61,8 @@ export class TechnologiesService {
 
   async getById(id: number | number[]) {
     try {
-      if(Array.isArray(id)) {
-        return this.technologiesRepository.findBy({ id: In(id) })
+      if (Array.isArray(id)) {
+        return this.technologiesRepository.findBy({ id: In(id) });
       } else {
         return await this.technologiesRepository.findOneOrFail({
           where: { id },
@@ -80,7 +78,7 @@ export class TechnologiesService {
     try {
       const technologyToUpdate = await this.getById(id);
 
-      if(Array.isArray(technologyToUpdate)) {
+      if (Array.isArray(technologyToUpdate)) {
         throw new BadRequestException(EXCEPTION_MESSAGE.INCORRECT_ARGUMENTS);
       }
 

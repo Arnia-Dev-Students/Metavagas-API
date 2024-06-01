@@ -12,7 +12,7 @@ import { RegisterDto } from './dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
+import { EXCEPTION_MESSAGE } from '../enums/exception-message.enum';
 
 @Injectable()
 export class AuthService {
@@ -70,7 +70,10 @@ export class AuthService {
     try {
       const user = await this.getUserByEmail(loginDto.email);
       if (!user) {
-        throw new HttpException(EXCEPTION_MESSAGE.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+        throw new HttpException(
+          EXCEPTION_MESSAGE.USER_NOT_FOUND,
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       const compare = await bcrypt.compare(loginDto.password, user.password);

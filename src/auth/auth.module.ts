@@ -4,7 +4,7 @@ import { User } from '../database/entities/user.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtOptions } from './jwt/jwt.config';
+import { jwtOptions } from '../auth/jwt/jwt.config';
 
 @Module({
   imports: [

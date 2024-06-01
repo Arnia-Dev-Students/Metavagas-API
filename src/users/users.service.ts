@@ -9,8 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../database/entities/user.entity';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { UserRoleEnum } from '../enums/user-role.enum';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
-import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
+import { EXCEPTION_MESSAGE } from '../enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from '../enums/successful-message.enum';
 
 @Injectable()
 export class UsersService {
@@ -54,9 +54,7 @@ export class UsersService {
       const user = await this.getById(id);
 
       if (userId !== user.id && userRole !== UserRoleEnum.ADMIN) {
-        throw new ForbiddenException(
-          EXCEPTION_MESSAGE.USER_UPDATE_NOT_ALLOWED,
-        );
+        throw new ForbiddenException(EXCEPTION_MESSAGE.USER_UPDATE_NOT_ALLOWED);
       }
 
       await this.usersRepository.update(id, data);
@@ -74,9 +72,7 @@ export class UsersService {
       const user = await this.getById(id);
 
       if (userId !== user.id && userRole !== UserRoleEnum.ADMIN) {
-        throw new ForbiddenException(
-          EXCEPTION_MESSAGE.DELETE_USER_NOT_ALLOWED,
-        );
+        throw new ForbiddenException(EXCEPTION_MESSAGE.DELETE_USER_NOT_ALLOWED);
       }
 
       await this.usersRepository.softDelete(id);

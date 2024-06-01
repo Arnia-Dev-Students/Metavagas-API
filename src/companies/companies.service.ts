@@ -10,8 +10,8 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { Company } from '../database/entities/company.entity';
 import { Repository } from 'typeorm';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { EXCEPTION_MESSAGE } from 'src/enums/exception-message.enum';
-import { SUCCESSFUL_MESSAGE } from 'src/enums/successful-message.enum';
+import { EXCEPTION_MESSAGE } from '../enums/exception-message.enum';
+import { SUCCESSFUL_MESSAGE } from '../enums/successful-message.enum';
 
 @Injectable()
 export class CompaniesService {
@@ -23,9 +23,7 @@ export class CompaniesService {
   async create(data: CreateCompanyDto) {
     try {
       if (await this.companyExistsBy(data.name)) {
-        throw new BadRequestException(
-          EXCEPTION_MESSAGE.COMPANY_NAME_EXISTS,
-        );
+        throw new BadRequestException(EXCEPTION_MESSAGE.COMPANY_NAME_EXISTS);
       }
       const newCompany = this.companiesRepository.create(data);
 
@@ -84,9 +82,7 @@ export class CompaniesService {
       if (data.name && data.name !== companyToUpdate.name) {
         const nameAlreadyExists = await this.companyExistsBy(data.name);
         if (nameAlreadyExists) {
-          throw new BadRequestException(
-            EXCEPTION_MESSAGE.COMPANY_NAME_EXISTS,
-          );
+          throw new BadRequestException(EXCEPTION_MESSAGE.COMPANY_NAME_EXISTS);
         }
       }
 

@@ -1,29 +1,42 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../database/entities/user.entity';
+import { AuthModule } from './auth.module';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { JwtService } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
-import { UsersController } from '../users/users.controller';
-import { UsersService } from '../users/users.service';
+import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
+import { jwtServiceMock } from '../testing/auth.test/jwt.service.mock';
 
 describe('AuthModule', () => {
   let module: TestingModule;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({}), // manter vazio para não conectar ao banco
-        TypeOrmModule.forFeature([User]),
-        UsersModule,
-      ],
-      controllers: [UsersController],
-      providers: [UsersService],
-    }).compile();
+      imports: [AuthModule, UsersModule],
+    })
+      .overrideProvider(jwtServiceMock.provide)
+      .useValue(jwtServiceMock.useValue)
+      .overrideProvider(JwtService)
+      .useValue({ sign: () => 'testToken' })
+      .overrideGuard(AuthGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(RoleGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
   });
 
   it('should be defined', () => {
-    const controller = module.get<UsersController>(UsersController);
-    const service = module.get<UsersService>(UsersService);
+    expect(module).toBeDefined();
+  });
+
+  it('should provide AuthController', () => {
+    const controller = module.get<AuthController>(AuthController);
     expect(controller).toBeDefined();
+  });
+
+  it('should provide AuthService', () => {
+    const service = module.get<AuthService>(AuthService);
     expect(service).toBeDefined();
   });
 });
